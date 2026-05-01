@@ -587,6 +587,100 @@ a { color: inherit; text-decoration: none; }
 
 /* ========== 蔵元 ========== */
 .brewery { background: var(--color-paper); padding: 96px 24px; }
+
+/* ========== 蔵元 スライダー ========== */
+.brewery-slider {
+  position: relative;
+  margin-bottom: 32px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-rose-bg);
+  user-select: none;
+}
+.brewery-slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.brewery-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.brewery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.brewery-slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(26, 22, 20, 0.55);
+  color: var(--color-cream);
+  border: 1px solid rgba(244, 234, 217, 0.4);
+  cursor: pointer;
+  font-family: var(--font-en);
+  font-size: 1.1rem;
+  z-index: 3;
+  transition: background 0.3s ease, transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.brewery-slider-btn:hover { background: var(--color-wine); border-color: var(--color-wine); }
+.brewery-slider-btn.prev { left: 12px; }
+.brewery-slider-btn.next { right: 12px; }
+.brewery-slider-btn:hover.prev { transform: translateY(-50%) translateX(-2px); }
+.brewery-slider-btn:hover.next { transform: translateY(-50%) translateX(2px); }
+.brewery-slider-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+  background: rgba(26, 22, 20, 0.45);
+  padding: 8px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.brewery-slider-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(244, 234, 217, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.brewery-slider-dots .dot.active { background: var(--color-cream); transform: scale(1.2); }
+.brewery-slider-dots .dot:hover { background: rgba(244, 234, 217, 0.7); }
+.brewery-slide-caption {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 2;
+  background: rgba(26, 22, 20, 0.55);
+  color: var(--color-cream);
+  font-family: var(--font-jp);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+@media (min-width: 768px) {
+  .brewery-slider-btn { width: 52px; height: 52px; font-size: 1.3rem; }
+  .brewery-slider-btn.prev { left: 20px; }
+  .brewery-slider-btn.next { right: 20px; }
+  .brewery-slide-caption { font-size: 0.78rem; left: 24px; bottom: 20px; padding: 8px 18px; }
+  .brewery-slider-dots { bottom: 22px; }
+}
+/* 旧クラス互換 */
 .brewery-image-main { margin-bottom: 32px; aspect-ratio: 16 / 9; overflow: hidden; }
 .brewery-image-main img { width: 100%; height: 100%; object-fit: cover; }
 .brewery-pillars { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 16px; }
@@ -1037,9 +1131,40 @@ a { color: inherit; text-decoration: none; }
     <h2 class="section-title">米から、<span class="accent">酒まで</span>。</h2>
     <p class="section-lead">米づくりから酒づくりまで——一貫したものづくりが、緋酉のうしろにあります。</p>
 
-    <div class="brewery-image-main">
-      <!-- image-06: 蔵元のあるまち・萩の風景 / 差し替え: images/image-06.jpg -->
-      <img src="images/image-06.jpg" alt="山口県萩市の町並み" loading="lazy" decoding="async" />
+    <!-- 蔵元スライダー（4枚） -->
+    <div class="brewery-slider" id="brewerySlider" aria-roledescription="carousel" aria-label="蔵元の風景">
+      <div class="brewery-slider-track">
+        <!-- Slide 1 / image-06: 萩の町並み / 差し替え: images/image-06.jpg -->
+        <div class="brewery-slide" role="group" aria-roledescription="slide" aria-label="1 / 4">
+          <img src="images/image-06.jpg" alt="山口県萩市の町並み" loading="eager" decoding="async" />
+          <span class="brewery-slide-caption">萩の町並み</span>
+        </div>
+        <!-- Slide 2 / image-10: 仕込みの風景 / 差し替え: images/image-10.jpg -->
+        <div class="brewery-slide" role="group" aria-roledescription="slide" aria-label="2 / 4">
+          <img src="images/image-10.jpg" alt="蔵の風景・仕込み" loading="lazy" decoding="async" />
+          <span class="brewery-slide-caption">蔵元：蒲久美子氏</span>
+        </div>
+        <!-- Slide 3 / image-11: 醸造のディテール / 差し替え: images/image-11.jpg -->
+        <div class="brewery-slide" role="group" aria-roledescription="slide" aria-label="3 / 4">
+          <img src="images/image-11.jpg" alt="醸造のディテール" loading="lazy" decoding="async" />
+          <span class="brewery-slide-caption">仕込みの風景</span>
+        </div>
+        <!-- Slide 4 / image-12: 完成した一献 / 差し替え: images/image-12.jpg -->
+        <div class="brewery-slide" role="group" aria-roledescription="slide" aria-label="4 / 4">
+          <img src="images/image-12.jpg" alt="完成した一献" loading="lazy" decoding="async" />
+          <span class="brewery-slide-caption">完成した一献</span>
+        </div>
+      </div>
+
+      <button class="brewery-slider-btn prev" type="button" aria-label="前のスライド">‹</button>
+      <button class="brewery-slider-btn next" type="button" aria-label="次のスライド">›</button>
+
+      <div class="brewery-slider-dots" role="tablist" aria-label="スライド選択">
+        <button class="dot active" type="button" role="tab" aria-label="スライド1" aria-selected="true"></button>
+        <button class="dot" type="button" role="tab" aria-label="スライド2" aria-selected="false"></button>
+        <button class="dot" type="button" role="tab" aria-label="スライド3" aria-selected="false"></button>
+        <button class="dot" type="button" role="tab" aria-label="スライド4" aria-selected="false"></button>
+      </div>
     </div>
 
     <div class="brewery-pillars">
@@ -1312,6 +1437,63 @@ const fadeObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+/* 蔵元スライダー */
+(function () {
+  const slider = document.getElementById('brewerySlider');
+  if (!slider) return;
+  const track = slider.querySelector('.brewery-slider-track');
+  const slides = slider.querySelectorAll('.brewery-slide');
+  const dots = slider.querySelectorAll('.brewery-slider-dots .dot');
+  const prevBtn = slider.querySelector('.brewery-slider-btn.prev');
+  const nextBtn = slider.querySelector('.brewery-slider-btn.next');
+  let current = 0;
+  let autoTimer = null;
+  const AUTO_INTERVAL = 5000;
+
+  function goTo(index) {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+      d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+    });
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+  function startAuto() { stopAuto(); autoTimer = setInterval(next, AUTO_INTERVAL); }
+  function stopAuto() { if (autoTimer) clearInterval(autoTimer); autoTimer = null; }
+
+  nextBtn.addEventListener('click', () => { next(); startAuto(); });
+  prevBtn.addEventListener('click', () => { prev(); startAuto(); });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); startAuto(); }));
+  slider.addEventListener('mouseenter', stopAuto);
+  slider.addEventListener('mouseleave', startAuto);
+
+  /* スワイプ対応 */
+  let touchStartX = 0;
+  let touchDeltaX = 0;
+  slider.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchDeltaX = 0;
+    stopAuto();
+  }, { passive: true });
+  slider.addEventListener('touchmove', (e) => {
+    touchDeltaX = e.touches[0].clientX - touchStartX;
+  }, { passive: true });
+  slider.addEventListener('touchend', () => {
+    if (Math.abs(touchDeltaX) > 50) {
+      if (touchDeltaX < 0) next(); else prev();
+    }
+    startAuto();
+  });
+
+  /* ビューポート内のときのみ自動再生 */
+  const sliderObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) startAuto(); else stopAuto(); });
+  }, { threshold: 0.3 });
+  sliderObserver.observe(slider);
+})();
 
 /* スムーズスクロール */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
