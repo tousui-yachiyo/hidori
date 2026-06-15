@@ -10,7 +10,7 @@
 |---|---|
 | 商品名 | 緋酉 -HIDORI- 純米大吟醸 |
 | 製造元 | 八千代酒造合名会社（山口県萩市・1887年創業） |
-| 価格 | ¥8,800（税込・720ml） |
+| 価格 | ¥9,800（税込・720ml） |
 | 発売日 | 2026年5月10日（出荷は6月上旬から順次） |
 | 原料米 | 山田錦100%（山口県萩地域産） |
 | 精米歩合 | 40% |
@@ -25,8 +25,10 @@
 
 ```
 /
-├── index.html           # LP本体（HTML / CSS / JS を1ファイルに内包）
+├── index.html           # 日本語版 LP（HTML / CSS / JS を1ファイルに内包）
 ├── README.md            # このファイル
+├── en/
+│   └── index.html       # 英語版 LP（画像は ../images/ を共有）
 └── images/
     ├── hero.jpg         # ファーストビュー / 最終CTA背景（再使用）
     ├── ogp.jpg          # SNSシェア用 OGP画像（5120×2688）
@@ -47,13 +49,40 @@
 
 ---
 
+## 多言語対応（日本語 / English）
+
+本LPは日本語版と英語版の2ページ構成です。
+
+| 言語 | ファイル | 公開URL |
+|---|---|---|
+| 日本語（デフォルト） | `index.html` | `https://hidori.puresake-tousui.com/` |
+| English | `en/index.html` | `https://hidori.puresake-tousui.com/en/` |
+
+- **言語切替ボタン**：両ページのヘッダー右上に `JA / EN` を設置。現在の言語がワインカラーで強調されます。日本語版の `EN` は `en/` へ、英語版の `JA` は `../`（日本語トップ）へリンクします。
+- **画像は共有**：英語版は独自の画像を持たず、`../images/` で日本語版と同じ画像を参照します。画像を差し替えれば**両言語に同時反映**されます。
+- **hreflang**：両ページの `<head>` に `ja` / `en` / `x-default` の相互参照を設定済み（検索エンジンが言語別に正しいページを表示します）。
+- **英語版のメタ情報**：`lang="en"`、`og:locale=en_US`、`canonical`/`og:url` は `/en/`、JSON-LD も英語化済み。
+
+### 更新時の同期ルール（重要）
+
+**日本語版（`index.html`）と英語版（`en/index.html`）は別ファイルです。** 一方を直すと、もう一方は自動では変わりません。以下を編集したら必ず両方を更新してください。
+
+- 価格・スペック・発売日の変更（→ 本文・メタ・JSON-LD・Sticky CTA すべて）
+- CTAリンクURLの変更
+- セクションの追加・削除
+- 文言の修正
+
+CTAリンクや外部リンク（EC・十粋・Instagram・問い合わせ）は**両ページで共通**です。発売後に「予約する → 購入する」へ変える場合も両ページで対応してください。
+
+---
+
 ## 公開方法（GitHub Pages）
 
 ### 1. リポジトリを作成してファイルをアップロード
 
 ```bash
 git init
-git add index.html README.md images/
+git add index.html README.md en/ images/
 git commit -m "Initial commit: 緋酉 LP"
 git branch -M main
 git remote add origin https://github.com/USERNAME/REPONAME.git
@@ -117,7 +146,7 @@ git push -u origin main
 
 ## CTAリンク差し替え箇所
 
-`index.html` 内に **8箇所** のCTA / 外部リンクがあります。全て検索置換で更新可能です。
+`index.html`（日本語）と `en/index.html`（英語）にそれぞれ同じCTA / 外部リンクがあります。リンクURLを変えるときは**両ファイル**を検索置換してください。
 
 | # | 場所 | 現在のリンク先 | 用途 |
 |---|---|---|---|
